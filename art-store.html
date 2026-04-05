@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>ART Store</title>
+  <style>
+    :root {
+      --primary-color: #000000;
+      --bg-color: #ffffff;
+      --text-main: #111111;
+      --text-muted: #666666;
+      --border-color: #e5e7eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-color);
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; cursor: pointer; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    
+    /* Header (상단 메뉴) */
+    .header {
+      position: absolute; top: 0; left: 0; right: 0;
+      padding: 1.5rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      color: white;
+    }
+    .header.nav-dark {
+      position: sticky; background: white; color: var(--text-main); border-bottom: 1px solid var(--border-color);
+    }
+    .header-left nav { display: flex; gap: 2rem; font-weight: 500; }
+    .header-center { font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; }
+    .header-right { display: flex; gap: 1.5rem; }
+
+    /* 화면들 공통 숨김 처리 */
+    .page { display: none; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* Home 페이지: Hero Section */
+    .hero {
+      height: 100vh;
+      background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2069&auto=format&fit=crop');
+      background-size: cover; background-position: center;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-logo-large { font-size: clamp(8rem, 25vw, 25rem); font-weight: 900; color: #eee; letter-spacing: -5px; }
+
+    /* Home 페이지: 벚꽃 프로모션 */
+    .promo-section {
+      height: 100vh;
+      background-image: url('https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=2076&auto=format&fit=crop');
+      background-size: cover; background-position: center;
+      padding: 5rem; display: flex; align-items: center;
+    }
+    .promo-content { max-width: 500px; }
+    .promo-title { font-size: 4rem; font-weight: 800; color: white; margin-bottom: 1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+    .promo-text { font-size: 1.2rem; color: white; line-height: 1.5; margin-bottom: 2rem; }
+    .btn-pill {
+      background-color: rgba(255,255,255,0.85); padding: 1rem 2rem; border-radius: 50px; font-weight: 600; transition: 0.3s;
+    }
+    .btn-pill:hover { background-color: white; transform: translateY(-2px); }
+
+    /* Catalog (상품리스트) 페이지 */
+    .catalog-page { padding: 8rem 3rem 4rem; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
+    .product-card { cursor: pointer; transition: 0.3s; }
+    .product-card:hover { transform: translateY(-5px); }
+    .product-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #f7f7f7; margin-bottom: 1rem; position: relative; }
+    .sold-out { position: absolute; top: 10px; right: 10px; background: white; padding: 5px 10px; font-size: 0.8rem; font-weight: bold; }
+    
+    /* Product Detail (상품상세) 페이지 */
+    .pdp-container { padding: 8rem 3rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .pdp-img { width: 100%; object-fit: cover; background: #f7f7f7; }
+    .qty-box { display: flex; border: 1px solid black; border-radius: 50px; overflow: hidden; width: max-content; }
+    .qty-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+    .qty-input { width: 40px; text-align: center; border: none; font-size: 1.1rem; }
+    .add-cart { flex:1; background: #9ba3af; color: white; border-radius: 50px; padding: 0 2rem; font-size: 1.1rem; transition: 0.3s; margin-left: 1rem; }
+    .add-cart.active { background: black; }
+
+    /* Footer */
+    .footer { background: #e2e8f5; padding: 4rem; margin-top: auto; }
+  </style>
+</head>
+<body>
+
+  <!-- 헤더 (모든 페이지 공통) -->
+  <header class="header" id="main-header">
+    <div class="header-left">
+      <nav>
+        <a onclick="goPage('home')">Home</a>
+        <a onclick="goPage('catalog')">Catalog</a>
+      </nav>
+    </div>
+    <div class="header-center"><a onclick="goPage('home')">ART</a></div>
+    <div class="header-right">🔍 👤 🛒</div>
+  </header>
+
+  <!-- 1. Home 페이지 -->
+  <div id="page-home" class="page active">
+    <section class="hero"><div class="hero-logo-large">ART</div></section>
+    <section class="promo-section">
+      <div class="promo-content">
+        <h2 class="promo-title">ART 바람막이</h2>
+        <p class="promo-text">내구성과 편안함을 위해 설계된 이 재킷은 기능과 멋을 자연스럽게 결합합니다.</p>
+        <button class="btn-pill" onclick="goPage('catalog')">Shop now</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- 2. Catalog 페이지 -->
+  <div id="page-catalog" class="page catalog-page">
+    <h1>Products</h1>
+    <div class="product-grid" id="product-list">
+      <!-- 자바스크립트로 상품들이 여기에 그려집니다 -->
+    </div>
+  </div>
+
+  <!-- 3. Product Detail 페이지 -->
+  <div id="page-detail" class="page">
+    <div class="pdp-container">
+      <img id="detail-img" class="pdp-img" src="" alt="">
+      <div>
+        <h1 id="detail-name" style="font-size:2.5rem; margin-bottom: 1rem;">상품명</h1>
+        <p id="detail-price" style="font-size:1.2rem; margin-bottom: 2rem; color: #666;">가격</p>
+        <div style="display:flex;">
+          <div class="qty-box">
+            <button class="qty-btn" onclick="changeQty(-1)">-</button>
+            <input id="qty-val" type="text" class="qty-input" value="1" readonly>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <button id="add-btn" class="add-cart active" onclick="addToCart()">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 ART, 단일 파일 메모장 버전 🚀</p>
+  </footer>
+
+  <script>
+    // 상품 데이터
+    const products = [
+      { id: 1, name: 'ART 주황 바람막이', price: '₩17', img: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600' },
+      { id: 2, name: 'ART 그레이 바람막이', price: '₩17', img: 'https://images.unsplash.com/photo-1605908502724-9060009a4307?auto=format&fit=crop&q=80&w=600' },
+      { id: 3, name: 'ART 네이비 바람막이', price: '₩17', img: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&q=80&w=600' },
+      { id: 4, name: 'ART 블랙 바람막이', price: '₩17', img: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=600' }
+    ];
+
+    let currentQty = 1;
+    let selectedProduct = null;
+
+    // 페이지 이동 함수
+    function goPage(pageId, productId = null) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + pageId).classList.add('active');
+      window.scrollTo(0, 0);
+
+      // 상단 메뉴바 색상 변경 (홈일 땐 투명, 다른 곳에선 흰 배경색)
+      const header = document.getElementById('main-header');
+      if (pageId === 'home') header.className = 'header';
+      else header.className = 'header nav-dark';
+
+      if (pageId === 'detail' && productId) {
+        selectedProduct = products.find(p => p.id === productId);
+        document.getElementById('detail-img').src = selectedProduct.img;
+        document.getElementById('detail-name').innerText = selectedProduct.name;
+        document.getElementById('detail-price').innerText = selectedProduct.price;
+        currentQty = 1;
+        document.getElementById('qty-val').value = currentQty;
+        document.getElementById('add-btn').innerText = "Add to cart";
+      }
+    }
+
+    // 상품 목록 채우기
+    const listDiv = document.getElementById('product-list');
+    products.forEach(p => {
+      listDiv.innerHTML += `
+        <div class="product-card" onclick="goPage('detail', ${p.id})">
+          <div style="position:relative;">
+            <span class="sold-out">Sold out</span>
+            <img class="product-img" src="${p.img}">
+          </div>
+          <div style="font-weight:bold;">${p.name}</div>
+          <div style="color:gray">${p.price}</div>
+        </div>
+      `;
+    });
+
+    // 수량 조절
+    function changeQty(diff) {
+      currentQty += diff;
+      if(currentQty < 1) currentQty = 1;
+      document.getElementById('qty-val').value = currentQty;
+    }
+
+    // 장바구니 버튼
+    function addToCart() {
+      const btn = document.getElementById('add-btn');
+      btn.innerText = "장바구니에 담김!";
+      setTimeout(() => { alert(selectedProduct.name + " " + currentQty + "개가 담겼습니다!"); btn.innerText = "Add to cart"; }, 10);
+    }
+  </script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBNbaEgfZXs5wJC3tnrv-PYou3uouZ74-Y",
+  authDomain: "art-store-bb89c.firebaseapp.com",
+  databaseURL: "https://art-store-bb89c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "art-store-bb89c",
+  storageBucket: "art-store-bb89c.firebasestorage.app",
+  messagingSenderId: "1044000091213",
+  appId: "1:1044000091213:web:9435bf51c27af6c1154004"
+};
+
+firebase.initializeApp(firebaseConfig);
+</script>
+</body>
+</html>
